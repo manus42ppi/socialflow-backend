@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
     if (!user) return res.status(401).json({ error: 'Ungültige Zugangsdaten' });
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Ungültige Zugangsdaten' });
-    const expiresIn = (ENV.JWT_EXPIRES_IN || '7d') as string;
+    const expiresIn = (ENV.JWT_EXPIRES_IN || '7d') as any;
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       ENV.JWT_SECRET as string,
@@ -35,7 +35,7 @@ router.post('/register', async (req, res) => {
       [email, hash, name]
     );
     const user = result.rows[0];
-    const expiresIn = (ENV.JWT_EXPIRES_IN || '7d') as string;
+    const expiresIn = (ENV.JWT_EXPIRES_IN || '7d') as any;
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       ENV.JWT_SECRET as string,
